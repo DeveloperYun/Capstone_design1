@@ -22,7 +22,7 @@
         {% include "navbar.html"%}
         <!-- Masthead-->
         <header class="masthead">
-            <div class="container">
+            <div class="container" style="margin-bottom: 100%;">
                 {% block content %}
                 <div class="container my-3">
                     <form method="post" action="{% url 'accounts:login' %}">
@@ -45,7 +45,5 @@
                 {% endblock %}
             </div>
         </header>
-
-
     </body>
 </html>

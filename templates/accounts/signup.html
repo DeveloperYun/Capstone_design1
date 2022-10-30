@@ -24,7 +24,7 @@
         <header class="masthead">
             <div class="container">
                 {% block content %}
-                <div class="container my-3">
+                <div class="container" style="margin-bottom: 100%;">
                     <form method="post" action="{% url 'accounts:signup' %}">
                         {% csrf_token %}
                         {% include "form_errors.html" %}
