@@ -9,5 +9,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', include('hello.urls')),
     path('accounts/', include('accounts.urls')),
+    path('mainfunc/', include('mainfunc.urls')),
     path('', views.index, name='index'),
 ]
