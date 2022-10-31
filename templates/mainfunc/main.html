@@ -24,7 +24,15 @@
         <header class="masthead" >
             <div class="container">
                 <div style="margin-bottom: 100%">
-                    
+                    <!-- 메인기능 -->
+                    {% if user.is_authenticated %}
+                        로그인ok
+                        
+                    {%else%}
+                        로그인 후 이용해주세요 
+                        <br/><br/><br/>
+                        <a class="btn btn-primary btn-xl text-uppercase" href="{% url 'accounts:login' %}">로그인</a>
+                    {%endif%}
                 </div>
             </div>
         </header>
