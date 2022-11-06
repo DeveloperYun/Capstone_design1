@@ -37,7 +37,7 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=Non
     bg_img = cv2.cvtColor(bg_img, cv2.COLOR_BGRA2BGR)
 
     return bg_img
-#
+# 
 
 def main(request):
     # HttpResponse는 요청에 대한 응답을 할때 사용한다
