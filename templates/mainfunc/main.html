@@ -17,16 +17,28 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
+    <!-- Navigation-->
+    {% include "navbar.html"%}
     <header class="masthead">
-        <!-- Navigation-->
-        {% include "navbar.html"%}
+        
         <!-- Masthead-->
         <div class="container">
             <div style="margin-bottom: 100%">
                 <!-- 메인기능 -->
                 {% if user.is_authenticated %}
-                    testsets
-                    <img src="{% static 'img/result.png' %}" width="100%">
+                    <img src="{% static 'img/result.png' %}" width="50%">
+                    <button type="button" class="btm_image" id="img_btn"  style="WIDTH: 70pt; HEIGHT: 120pt">
+                        <img src="{%static 'img/boy.png' %} "width="100%">
+                    </button>
+                    <button type="button" class="btm_image" id="img_btn"  style="WIDTH: 70pt; HEIGHT: 120pt">
+                        <img src="{%static 'img/boy2.png' %} "width="100%">
+                    </button>
+                    <button type="button" class="btm_image" id="img_btn"  style="WIDTH: 70pt; HEIGHT: 120pt">
+                        <img src="{%static 'img/boy3.png' %} "width="100%">
+                    </button>
+                    <button type="button" class="btm_image" id="img_btn"  style="WIDTH: 70pt; HEIGHT: 120pt">
+                        <img src="{%static 'img/boy4.png' %} "width="100%">
+                    </button>
                 {%else%}
                     로그인 후 이용해주세요 
                     <br/><br/><br/>
