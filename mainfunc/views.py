@@ -37,7 +37,6 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=Non
     bg_img = cv2.cvtColor(bg_img, cv2.COLOR_BGRA2BGR)
 
     return bg_img
-#
 
 def main(request):
     # HttpResponse는 요청에 대한 응답을 할때 사용한다
@@ -79,7 +78,7 @@ def main(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
-    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED)
+    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
@@ -111,7 +110,7 @@ def main(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-10, overlay_size=(face_size, face_size))
+            ori, overlay, center_x, center_y-10, overlay_size=(face_size*2, face_size*2))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -143,8 +142,33 @@ def main(request):
         cv2.waitKey(1)  # 1밀리세컨드만큼 대기. 이걸 넣어야 동영상이 제대로 보임
         
         # 사용자가 자기 사진 찍는건 Media 파일
+        # 해당 경로에 결과물 저장
         cv2.imwrite("static/img/result.png",result)
         break
+
+    # 배경제거 알고리즘 적용.
+    # imageUrl = 'test.png'
+    # imgres = cv2.imread(imageUrl)
+
+    # mask = np.zeros(imgres.shape[:2],np.uint8)
+
+    # bgdModel = np.zeros((1,65),np.float64)
+    # fgdModel = np.zeros((1,65),np.float64)
+
+    # rect = (1,1,665,344)
+    # cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+
+    # mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+    # imgres = imgres*mask2[:,:,np.newaxis]
+
+    # tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
+    # _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    # b, g, r = cv2.split(imgres)
+    # rgba = [b,g,r, alpha]
+    # dst = cv2.merge(rgba,4)
+
+    # cv2.imwrite("static/img/result.png", dst)
+
     return render(request, 'mainfunc/main.html')
 
 def main2(request):
@@ -158,6 +182,7 @@ def main2(request):
     # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+    '''
     # 웹캠이 켜진다.
     cap = cv2.VideoCapture(0)
 
@@ -187,6 +212,7 @@ def main2(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
+    '''
     overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED)
     
     while True:
@@ -267,6 +293,7 @@ def main3(request):
     # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+    '''
     # 웹캠이 켜진다.
     cap = cv2.VideoCapture(0)
 
@@ -296,6 +323,7 @@ def main3(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
+    '''
     overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED)
     
     while True:
@@ -375,6 +403,7 @@ def main4(request):
     # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+    '''
     # 웹캠이 켜진다.
     cap = cv2.VideoCapture(0)
 
@@ -404,6 +433,7 @@ def main4(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
+    '''
     overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED)
     
     while True:
