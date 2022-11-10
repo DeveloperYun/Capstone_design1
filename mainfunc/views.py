@@ -78,11 +78,82 @@ def main(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
+    #test.png ##########################################################
+    #canny edge를 통해 경계선 찾고 색 채우기 방식을 적용한 것
+    '''
+    BLUR = 21
+    CANNY_THRESH_1 = 18
+    CANNY_THRESH_2 = 28
+    MASK_DILATE_ITER = 2
+    MASK_ERODE_ITER = 2
+    MASK_COLOR = (0,0,0) # black
+    
+    
+    img = cv2.imread('test.png')
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    
+    edges = cv2.Canny(gray, CANNY_THRESH_1, CANNY_THRESH_2)
+    edges = cv2.dilate(edges, None)
+    edges = cv2.erode(edges, None)
+    
+    contour_info = []
+    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    
+    for c in contours:
+        contour_info.append((
+            c,
+            cv2.isContourConvex(c),
+            cv2.contourArea(c),
+        ))
+    
+    contour_info = sorted(contour_info, key=lambda c: c[2], reverse=True)
+    max_contour = contour_info[0]
+    
+    mask = np.zeros(edges.shape)
+    cv2.fillConvexPoly(mask, max_contour[0], (255))
+    
+    mask = cv2.dilate(mask, None, iterations=MASK_DILATE_ITER)
+    mask = cv2.erode(mask, None, iterations=MASK_ERODE_ITER)
+    mask = cv2.GaussianBlur(mask, (BLUR, BLUR), 0)
+    mask_stack = np.dstack([mask]*3)
+    
+    mask_stack  = mask_stack.astype('float32') / 255.0
+    img         = img.astype('float32') / 255.0
+    
+    masked = (mask_stack * img) + ((1-mask_stack) * MASK_COLOR)
+    masked = (masked * 255).astype('uint8')
+    
+    dst = cv2.resize(masked, dsize=(640, 480), interpolation=cv2.INTER_AREA)
+    '''
+    imageUrl = 'test.png'
+    imgres = cv2.imread(imageUrl)
+
+    mask = np.zeros(imgres.shape[:2],np.uint8)
+
+    bgdModel = np.zeros((1,65),np.float64)
+    fgdModel = np.zeros((1,65),np.float64)
+
+    rect = (1,1,665,344)
+    cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+
+    mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+    imgres = imgres*mask2[:,:,np.newaxis]
+
+    tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
+    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    b, g, r = cv2.split(imgres)
+    rgba = [b,g,r, alpha]
+    dst = cv2.merge(rgba,4)
+    
+    
+    cv2.imwrite("test.png", dst)
+#################################################################################
     overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
+    #boy.png 에 test.png(내사진) 을 맞춘다.
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
-        img = cv2.imread('boy.png', 1)
+        img = cv2.imread('boy.png', 1) 
 
         # img에 (int(img.shape[1] * scaler), int(img.shape[0] * scaler)) 크기로 조절
         img = cv2.resize(img, (int(img.shape[1] * scaler), int(img.shape[0] * scaler)))
@@ -145,79 +216,81 @@ def main(request):
         # 해당 경로에 결과물 저장
         cv2.imwrite("static/img/result.png",result)
         break
-
+    '''
     ####################################
     #FIXME: GRABCUT 알고리즘으로 배경 자체를 지워버리는 방법
    
-    # imageUrl = 'test.png'
-    # imgres = cv2.imread(imageUrl)
+    imageUrl = 'test.png'
+    imgres = cv2.imread(imageUrl)
 
-    # mask = np.zeros(imgres.shape[:2],np.uint8)
+    mask = np.zeros(imgres.shape[:2],np.uint8)
 
-    # bgdModel = np.zeros((1,65),np.float64)
-    # fgdModel = np.zeros((1,65),np.float64)
+    bgdModel = np.zeros((1,65),np.float64)
+    fgdModel = np.zeros((1,65),np.float64)
 
-    # rect = (1,1,665,344)
-    # cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+    rect = (1,1,665,344)
+    cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
 
-    # mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
-    # imgres = imgres*mask2[:,:,np.newaxis]
+    mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+    imgres = imgres*mask2[:,:,np.newaxis]
 
-    # tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
-    # _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
-    # b, g, r = cv2.split(imgres)
-    # rgba = [b,g,r, alpha]
-    # dst = cv2.merge(rgba,4)
+    tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
+    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    b, g, r = cv2.split(imgres)
+    rgba = [b,g,r, alpha]
+    dst = cv2.merge(rgba,4)
     
     
-    # cv2.imwrite("static/img/result.png", dst)
+    cv2.imwrite("static/img/result.png", dst)
     # #########################################
     '''
+    '''
     # canny edge를 통해 경계선 찾고 색 채우기 방식을 적용한 것
-    BLUR = 21
-    CANNY_THRESH_1 = 18
-    CANNY_THRESH_2 = 28
-    MASK_DILATE_ITER = 2
-    MASK_ERODE_ITER = 2
-    MASK_COLOR = (0,0,0) # In BGR format
+    # BLUR = 21
+    # CANNY_THRESH_1 = 18
+    # CANNY_THRESH_2 = 28
+    # MASK_DILATE_ITER = 2
+    # MASK_ERODE_ITER = 2
+    # MASK_COLOR = (0,0,0) # black
     
     
-    img = cv2.imread('test.png')
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    # img = cv2.imread('test.png')
+    # gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     
-    edges = cv2.Canny(gray, CANNY_THRESH_1, CANNY_THRESH_2)
-    edges = cv2.dilate(edges, None)
-    edges = cv2.erode(edges, None)
+    # edges = cv2.Canny(gray, CANNY_THRESH_1, CANNY_THRESH_2)
+    # edges = cv2.dilate(edges, None)
+    # edges = cv2.erode(edges, None)
     
-    contour_info = []
-    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+    # contour_info = []
+    # contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
     
-    for c in contours:
-        contour_info.append((
-            c,
-            cv2.isContourConvex(c),
-            cv2.contourArea(c),
-        ))
+    # for c in contours:
+    #     contour_info.append((
+    #         c,
+    #         cv2.isContourConvex(c),
+    #         cv2.contourArea(c),
+    #     ))
     
-    contour_info = sorted(contour_info, key=lambda c: c[2], reverse=True)
-    max_contour = contour_info[0]
+    # contour_info = sorted(contour_info, key=lambda c: c[2], reverse=True)
+    # max_contour = contour_info[0]
     
-    mask = np.zeros(edges.shape)
-    cv2.fillConvexPoly(mask, max_contour[0], (255))
+    # mask = np.zeros(edges.shape)
+    # cv2.fillConvexPoly(mask, max_contour[0], (255))
     
-    mask = cv2.dilate(mask, None, iterations=MASK_DILATE_ITER)
-    mask = cv2.erode(mask, None, iterations=MASK_ERODE_ITER)
-    mask = cv2.GaussianBlur(mask, (BLUR, BLUR), 0)
-    mask_stack = np.dstack([mask]*3)
+    # mask = cv2.dilate(mask, None, iterations=MASK_DILATE_ITER)
+    # mask = cv2.erode(mask, None, iterations=MASK_ERODE_ITER)
+    # mask = cv2.GaussianBlur(mask, (BLUR, BLUR), 0)
+    # mask_stack = np.dstack([mask]*3)
     
-    mask_stack  = mask_stack.astype('float32') / 255.0
-    img         = img.astype('float32') / 255.0
+    # mask_stack  = mask_stack.astype('float32') / 255.0
+    # img         = img.astype('float32') / 255.0
     
-    masked = (mask_stack * img) + ((1-mask_stack) * MASK_COLOR)
-    masked = (masked * 255).astype('uint8')
+    # masked = (mask_stack * img) + ((1-mask_stack) * MASK_COLOR)
+    # masked = (masked * 255).astype('uint8')
     
-    dst = cv2.resize(masked, dsize=(640, 480), interpolation=cv2.INTER_AREA)
-    cv2.imwrite("static/img/result.png", dst)
+    # dst = cv2.resize(masked, dsize=(640, 480), interpolation=cv2.INTER_AREA)
+    
+    # cv2.imwrite("static/img/result.png", dst)
     '''
     return render(request, 'mainfunc/main.html')
 
