@@ -1,0 +1,48 @@
+ERROR:django.request:Internal Server Error: /mainfunc/main/
+Traceback (most recent call last):
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py", line 160, in main
+    rmbg.remove_background_from_img_file(new_file_name="test.png")
+TypeError: remove_background_from_img_file() got an unexpected keyword argument 'new_file_name'
+ERROR:django.request:Internal Server Error: /mainfunc/main/
+Traceback (most recent call last):
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py", line 160, in main
+    rmbg.remove_background_from_img_file(new_file_name="test.png")
+TypeError: remove_background_from_img_file() got an unexpected keyword argument 'new_file_name'
+INFO:django.utils.autoreload:C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /mainfunc/main/
+Traceback (most recent call last):
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py", line 160, in main
+    rmbg.remove_background_from_img_file("test.png", new_file_name="test.png")
+TypeError: remove_background_from_img_file() got an unexpected keyword argument 'new_file_name'
+INFO:django.utils.autoreload:C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /mainfunc/main/
+Traceback (most recent call last):
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\yhb38\.conda\envs\capstone_design1\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py", line 161, in main
+    r
+NameError: name 'r' is not defined
+INFO:django.utils.autoreload:C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py changed, reloading.
+INFO:django.utils.autoreload:C:\Users\yhb38\OneDrive\문서\GitHub\Capstone_design1\mainfunc\views.py changed, reloading.

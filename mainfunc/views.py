@@ -5,6 +5,7 @@ import cv2
 import dlib
 import sys
 import numpy as np
+from removebg import RemoveBg
 
 # overlay function, 이미지(웹캠)을 이미지에 띄우는 것은 구글링을 통해 찾았다함.
 def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=None):
@@ -78,9 +79,13 @@ def main(request):
     writer.release()  # 저장 종료
 
     cv2.destroyAllWindows()
+
+    
+    
     #test.png ##########################################################
-    #canny edge를 통해 경계선 찾고 색 채우기 방식을 적용한 것
     '''
+    #canny edge를 통해 경계선 찾고 색 채우기 방식을 적용한 것
+    
     BLUR = 21
     CANNY_THRESH_1 = 18
     CANNY_THRESH_2 = 28
@@ -124,32 +129,36 @@ def main(request):
     masked = (masked * 255).astype('uint8')
     
     dst = cv2.resize(masked, dsize=(640, 480), interpolation=cv2.INTER_AREA)
-    '''
-    imageUrl = 'test.png'
-    imgres = cv2.imread(imageUrl)
-
-    mask = np.zeros(imgres.shape[:2],np.uint8)
-
-    bgdModel = np.zeros((1,65),np.float64)
-    fgdModel = np.zeros((1,65),np.float64)
-
-    rect = (1,1,665,344)
-    cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
-
-    mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
-    imgres = imgres*mask2[:,:,np.newaxis]
-
-    tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
-    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
-    b, g, r = cv2.split(imgres)
-    rgba = [b,g,r, alpha]
-    dst = cv2.merge(rgba,4)
-    
-    
     cv2.imwrite("test.png", dst)
+    '''
+    ########################################################################
+
+    ## grabcut algorithm 으로 배경제거하기 적용
+    # imageUrl = 'test.png'
+    # imgres = cv2.imread(imageUrl)
+
+    # mask = np.zeros(imgres.shape[:2],np.uint8)
+
+    # bgdModel = np.zeros((1,65),np.float64)
+    # fgdModel = np.zeros((1,65),np.float64)
+
+    # rect = (1,1,665,344)
+    # cv2.grabCut(imgres,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+
+    # mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+    # imgres = imgres*mask2[:,:,np.newaxis]
+
+    # tmp = cv2.cvtColor(imgres, cv2.COLOR_BGR2GRAY)
+    # _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    # b, g, r = cv2.split(imgres)
+    # rgba = [b,g,r, alpha]
+    # dst = cv2.merge(rgba,4)
+    # cv2.imwrite("test.png", dst)
 #################################################################################
-    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
+    rmbg = RemoveBg("P1sxsndo4tmMbGD4nE6Z8ZJ9", "error.log")
+    rmbg.remove_background_from_img_file("test.png")
+    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     #boy.png 에 test.png(내사진) 을 맞춘다.
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
@@ -206,8 +215,8 @@ def main(request):
 
         # cv2.imshow(title, image) : title은 윈도우 창의 제목을 의미하며 image는 cv2.imread()의 return 값입니다.
         # 모니터에 이미지를 보여주는 함수
-        cv2.imshow('img', img)
-        cv2.imshow('result', result)
+        # cv2.imshow('img', img)
+        # cv2.imshow('result', result)
 
         # 0넣으면 x클릭해야 꺼짐  1넣으면 ctrl+c해도 꺼짐
         cv2.waitKey(1)  # 1밀리세컨드만큼 대기. 이걸 넣어야 동영상이 제대로 보임
@@ -216,6 +225,8 @@ def main(request):
         # 해당 경로에 결과물 저장
         cv2.imwrite("static/img/result.png",result)
         break
+
+    
     '''
     ####################################
     #FIXME: GRABCUT 알고리즘으로 배경 자체를 지워버리는 방법
