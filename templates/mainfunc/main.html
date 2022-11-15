@@ -26,19 +26,27 @@
             <div style="margin-bottom: 100%">
                 <!-- 메인기능 -->
                 {% if user.is_authenticated %}
-                    <img src="{% static 'img/result.png' %}" width="50%">
+                {% comment %} style="border: 3px solid gold;border-radius: 50%;"  {% endcomment %}
+                    <a href="{% url 'mainfunc:tip' %}">
+                        <img src="{% static 'img/result.png' %}" width="50%">
+                    </a>
                     <a type="button" href="{% url 'mainfunc:main' %}" style="WIDTH: 70pt; HEIGHT: 120pt">
-                        <img src="{%static 'img/boy.png' %} "width="100%">
+                        <img src="{%static 'img/boy.png' %}" style="border: 3px solid ;border-radius: 50%"; width="100%">
                     </a>
+
                     <a type="button" href="{% url 'mainfunc:main2' %}" style="WIDTH: 70pt; HEIGHT: 120pt">
-                        <img src="{%static 'img/boy2.png' %} "width="100%">
+                        <img src="{%static 'img/boy2.png' %} " style="border: 3px solid ;border-radius: 50%;"width="100%">
                     </a>
+
                     <a type="button" href="{% url 'mainfunc:main3' %}" style="WIDTH: 70pt; HEIGHT: 120pt">
-                        <img src="{%static 'img/boy3.png' %} "width="100%">
+                        <img src="{%static 'img/boy3.png' %} " style="border: 3px solid ;border-radius: 50%;" width="100%">
                     </a>
+                    
                     <a type="button" href="{% url 'mainfunc:main4' %}" style="WIDTH: 70pt; HEIGHT: 120pt">
-                        <img src="{%static 'img/boy4.png' %} "width="100%">
+                        <img src="{%static 'img/boy4.png' %} " style="border: 3px solid ;border-radius: 50%;" width="100%">
                     </a>
+                    <br/>
+                    "사진을 클릭하면 설명교구로 이동합니다"
                 {%else%}
                     로그인 후 이용해주세요 
                     <br/><br/><br/>
