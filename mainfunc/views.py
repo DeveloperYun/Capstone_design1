@@ -233,7 +233,7 @@ def main(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-100, overlay_size=(face_size*3, face_size*3))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
