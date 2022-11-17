@@ -7,6 +7,15 @@ import sys
 import numpy as np
 from removebg import RemoveBg
 
+
+def remove_grabcut_bg(image):
+    tmp = cv2.cvtColor(image,cv2.COLOR_RGB2GRAY)
+    _,alpha = cv2.threshold(tmp,0,255,cv2.THRESH_BINARY)
+    r, g, b = cv2.split(image)
+    rgba = [r,g,b,alpha]
+    dst = cv2.merge(rgba,4)
+    return dst
+
 # overlay function, 이미지(웹캠)을 이미지에 띄우는 것
 def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=None):
     bg_img = background_img.copy()
@@ -160,8 +169,37 @@ def main(request):
     #rmbg = RemoveBg("P1sxsndo4tmMbGD4nE6Z8ZJ9", "error.log")
     #rmbg.remove_background_from_img_file("test.png")
     
+            # 입력 영상 불러오기
+    src = cv2.imread('test.png')
+
+    if src is None:
+        print('Image load failed!')
+        sys.exit()
+        
+    # 사장형 지정을 통한 초기 분할
+    rc = cv2.selectROI(src) # 초기 위치 지정하고 모서리 좌표 4개를 튜플값으로 반환
+    mask = np.zeros(src.shape[:2], np.uint8) # 마스크는 검정색으로 채워져있고 입력 영상과 동일한 크기
+
+    # 결과를 계속 업데이트 하고 싶으면 bgd, fgd 입력
+    cv2.grabCut(src, mask, rc, None, None, 5, cv2.GC_INIT_WITH_RECT)
+
+    # grabCut 자료에서 0,2는 배경, 1,3은 전경입니다.
+    # mask == 0 or mask == 2를 만족하면 0으로 설정 아니면 1로 설정합니다
+    mask2 = np.where((mask == 0) | (mask == 2), 0, 1).astype('uint8')
+
+    # np.newaxis로 차원 확장
+    dst = src * mask2[:, :, np.newaxis]
     
-    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
+    cv2.imwrite("test.png", dst)
+
+    
+
+    image = cv2.imread("test.png",1)
+
+    image2 = remove_grabcut_bg(image)
+    cv2.imwrite("test.png", image2)
+
+    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     #boy.png 에 test.png(내사진) 을 맞춘다.
 
 
@@ -195,7 +233,7 @@ def main(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-100, overlay_size=(face_size*2, face_size*2))
+            ori, overlay, center_x, center_y-100, overlay_size=(face_size*3, face_size*3))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -425,11 +463,11 @@ def main3(request):
     # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
-    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED)
+    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED)
     
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
-        img = cv2.imread('test.png_no_bg.png', 1)
+        img = cv2.imread('boy3.png', 1)
 
         # img에 (int(img.shape[1] * scaler), int(img.shape[0] * scaler)) 크기로 조절
         img = cv2.resize(img, (int(img.shape[1] * scaler), int(img.shape[0] * scaler)))
