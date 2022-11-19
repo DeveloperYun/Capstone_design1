@@ -2188,7 +2188,9 @@ progress {
 
 .form-control {
   display: block;
-  width: 100%;
+  /* width: 100%; */
+  width: 40%; 
+	margin: 0 auto;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -3947,6 +3949,25 @@ textarea.form-control-lg {
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
+
+.nav-btn {
+  width: 90px !important;
+  height: 38px !important;
+  background: #FF4DAB 0% 0% no-repeat padding-box;
+  border-radius: 50px;
+  padding: 0px;
+  display: flex !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  justify-content: center !important;
+  -webkit-box-pack: center !important;
+  -ms-flex-pack: center !important;
+  align-items: center !important;
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  color: white !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-link {
     transition: none;
@@ -11341,7 +11362,7 @@ p {
 #mainNav {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: #212529;
+  /* background-color: #212529; */
 }
 #mainNav .navbar-toggler {
   padding: 0.75rem;
@@ -11363,7 +11384,7 @@ p {
 #mainNav .navbar-nav .nav-item .nav-link {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 0.95rem;
-  color: #fff;
+  color: #000;
   letter-spacing: 0.0625em;
 }
 #mainNav .navbar-nav .nav-item .nav-link.active, #mainNav .navbar-nav .nav-item .nav-link:hover {
@@ -11409,12 +11430,17 @@ header.masthead {
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
-  color: #fff;
+  color: #000;
   background-image: url("../assets/img/header-bg.jpg");
   background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
+  background-attachment: fixed;
+  background-position: center;
   background-size: cover;
+  top: 0px;
+  position: sticky;
+  right: 0;
+  bottom: 0;
+  background-size: cover !important;
 }
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
