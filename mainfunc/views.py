@@ -354,39 +354,38 @@ def main2(request):
     # 얼굴 디텍터 모듈 초기화
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    
+    #         # 입력 영상 불러오기
+    # src = cv2.imread('test.png')
 
-    '''
-    # 웹캠이 켜진다.
-    cap = cv2.VideoCapture(0)
+    # if src is None:
+    #     print('Image load failed!')
+    #     sys.exit()
+        
+    # # 사장형 지정을 통한 초기 분할
+    # rc = cv2.selectROI(src) # 초기 위치 지정하고 모서리 좌표 4개를 튜플값으로 반환
+    # mask = np.zeros(src.shape[:2], np.uint8) # 마스크는 검정색으로 채워져있고 입력 영상과 동일한 크기
 
-    width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-    height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    print("size: {0} x {1}".format(width, height))
+    # # 결과를 계속 업데이트 하고 싶으면 bgd, fgd 입력
+    # cv2.grabCut(src, mask, rc, None, None, 5, cv2.GC_INIT_WITH_RECT)
 
-    # 영상 저장을 위한 VideoWriter 인스턴스 생성
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    writer = cv2.VideoWriter('test.avi', fourcc, 24, (int(width), int(height)))
+    # # grabCut 자료에서 0,2는 배경, 1,3은 전경입니다.
+    # # mask == 0 or mask == 2를 만족하면 0으로 설정 아니면 1로 설정합니다
+    # mask2 = np.where((mask == 0) | (mask == 2), 0, 1).astype('uint8')
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if ret:
-            writer.write(frame)  # 프레임 저장
-            cv2.imshow('Video Window', frame)
+    # # np.newaxis로 차원 확장
+    # dst = src * mask2[:, :, np.newaxis]
+    
+    # cv2.imwrite("test.png", dst)
 
-            # q 를 누르면 종료
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                cv2.imwrite('test.png', frame)
-                # img = cv2.imread('test.png', 1)
-                break
-        else:
-            break
+    
 
-    cap.release()
-    writer.release()  # 저장 종료
+    # image = cv2.imread("test.png",1)
 
-    cv2.destroyAllWindows()
-    '''
-    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED)
+    # image2 = remove_grabcut_bg(image)
+    # cv2.imwrite("test.png", image2)
+
+    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
@@ -418,7 +417,7 @@ def main2(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-10, overlay_size=(face_size*2, face_size*2))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -463,7 +462,7 @@ def main3(request):
     # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
-    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED)
+    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
@@ -495,7 +494,7 @@ def main3(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-10, overlay_size=(face_size*2, face_size*2))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -571,7 +570,7 @@ def main4(request):
 
     cv2.destroyAllWindows()
     '''
-    overlay = cv2.imread('test.png_no_bg.png', cv2.IMREAD_UNCHANGED)
+    overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
     while True:
         # cv2.imread(fileName, flag) : fileName은 이미지 파일의 경로를 의미하고 flag는 이미지 파일을 읽을 때 옵션이다.
@@ -603,7 +602,7 @@ def main4(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-10, overlay_size=(face_size*2, face_size*2))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
