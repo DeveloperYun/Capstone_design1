@@ -233,7 +233,7 @@ def main(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*4, face_size*4))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -417,7 +417,7 @@ def main2(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*4, face_size*4))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -458,9 +458,37 @@ def main3(request):
     scaler = 5.0
     # 얼굴 디텍터 모듈 초기화
     detector = dlib.get_frontal_face_detector()
-    # 얼굴 특징점 모듈 초기화 shape_predictor_68_face_landmarks.dat 이 파일이 있어야 실행가능
-    # shape_predictor_68_face_landmarks.dat 는 머신러닝으로 학습된 모델
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
+    
+    #         # 입력 영상 불러오기
+    # src = cv2.imread('test.png')
+
+    # if src is None:
+    #     print('Image load failed!')
+    #     sys.exit()
+        
+    # # 사장형 지정을 통한 초기 분할
+    # rc = cv2.selectROI(src) # 초기 위치 지정하고 모서리 좌표 4개를 튜플값으로 반환
+    # mask = np.zeros(src.shape[:2], np.uint8) # 마스크는 검정색으로 채워져있고 입력 영상과 동일한 크기
+
+    # # 결과를 계속 업데이트 하고 싶으면 bgd, fgd 입력
+    # cv2.grabCut(src, mask, rc, None, None, 5, cv2.GC_INIT_WITH_RECT)
+
+    # # grabCut 자료에서 0,2는 배경, 1,3은 전경입니다.
+    # # mask == 0 or mask == 2를 만족하면 0으로 설정 아니면 1로 설정합니다
+    # mask2 = np.where((mask == 0) | (mask == 2), 0, 1).astype('uint8')
+
+    # # np.newaxis로 차원 확장
+    # dst = src * mask2[:, :, np.newaxis]
+    
+    # cv2.imwrite("test.png", dst)
+
+    
+
+    # image = cv2.imread("test.png",1)
+
+    # image2 = remove_grabcut_bg(image)
+    # cv2.imwrite("test.png", image2)
 
     overlay = cv2.imread('test.png', cv2.IMREAD_UNCHANGED) # 캠으로 찍은 내 사진
     
@@ -602,7 +630,7 @@ def main4(request):
         # 복사한 이미지를 센터x, 센터y 중심으로 넣고 overlay_size 만큼 resize해서
         # 원본 이미지에 넣어준다. 크기는 얼굴 크기만큼 resize해주는 것이다.
         result = overlay_transparent(
-            ori, overlay, center_x, center_y-500, overlay_size=(face_size*3, face_size*3))
+            ori, overlay, center_x, center_y-500, overlay_size=(face_size*4, face_size*4))
 
         # visualize , 직사각형 그리기
         img = cv2.rectangle(img, pt1=(face.left(), face.top()),
@@ -640,3 +668,12 @@ def main4(request):
 
 def tip(request):
     return render(request, 'mainfunc/tip.html')
+
+def tip2(request):
+    return render(request, 'mainfunc/tip2.html')
+
+def tip3(request):
+    return render(request, 'mainfunc/tip3.html')
+
+def tip4(request):
+    return render(request, 'mainfunc/tip4.html')
